@@ -6,25 +6,31 @@
     <title>Edit Expense</title>
 </head>
 <body>
-    <form action="{{ url_for('edit_expense', id=expense[0]) }}">
-        <label>Title:</label>
-        <input type="text" name="title" value="{{ expense[1] }}"><br><br>
+    <form action="{{ url_for('edit_expense', id=expense['id']) }}" method="POST">
+        <h2>Edit Expense</h2>
 
-        <label>Amount:</label>
-        <input type="number" step="1" name="amount" value="{{ expense[2] }}" required><br><br>
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" value="{{ expense['title'] }}" required>
 
-        <label>Category:</label>
-        <input type="text" name="category" value="{{ expense[3] }}" required><br><br>
+        <label for="amount">Amount:</label>
+        <input type="number" id="amount" name="amount" step="1" value="{{ expense['amount'] }}" min="1" required>
 
-        <label>Date:</label>
-        <input type="date" name="date" value="{{ date }} " required><br><br>
+        <label for="category">Category:</label>
+        <select id="category" name="category" required>
+            {% set all_categories = ["Food", "Travel", "Clothes", "Academics", "Utilities", "Others"] %}
+            {% for cat in all_categories %}
+                <option value="{{ cat }}" {% if expense['category'] == cat %} selected {% endif %}></option>
+            {% endfor %}
+        </select>
 
-        <label>Description:</label>
-        <input type="text" name="description" value="{{ expense[5] }}" required><br><br>
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" value="{{ expense['date'] }}" required>
 
-        <input type="submit">
+        <label for="description">Description:</label>
+        <input type="text" id="description" name="description" value="{{ expense['description'] }}" required>
+
+        <input type="submit" value="Update Expense">
+        <a class="back-link" href="{{ url_for('home') }}">← Back to Home</a>
     </form>
-    <br>
-    <a href="{{ url_for('home') }}">Back to Home</a>
 </body>
 </html>

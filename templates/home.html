@@ -3,51 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Expenses</title>
+    <title>Expense Tracker</title>
 </head>
 <body>
     <h1>Expense Tracker</h1>
+
     <a href="{{ url_for('add_expense') }}">Add New Expense</a>
-    <div>
 
     {% if expenses %}
+        <h2>All Expenses</h2>
         <table>
-            <tr>
-                <th>Title</th>
-                <th>Amount</th>
-                <th>Category</th>
-                <th>Date</th>
-                <th>Description</th>
-                <th>Edit</th>
-                <th>Remove</th>
-            </tr>
-            {% for expense in expenses %}
-            <tr>
-                <td>{{ expense[1] }}</td>
-                <td>{{ expense[2] }}</td>
-                <td>{{ expense[3] }}</td>
-                <td>{{ expense[4] }}</td>
-                <td>{{ expense[5] }}</td>
-                <td>
-                    <form action="{{ url_for('edit_expense', id=expense[0]) }}">
-                        <button type="submit">Edit</button>
-                    </form>
-                </td>
-                <td>
-                    <form action="{{ url_for('delete_expense', id=expense[0]) }}" method="POST">
-                        <button type="submit">Delete</button>
-                    </form>
-                </td>
-            </tr>
-            {% endfor %}
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Amount</th>
+                    <th>Category</th>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Edit</th>
+                    <th>Remove</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for expense in expenses %}
+                <tr>
+                    <td>{{ expense[1] }}</td>
+                    <td>{{ expense[2] }}</td>
+                    <td>{{ expense[3] }}</td>
+                    <td>{{ expense[4] }}</td>
+                    <td>{{ expense[5] }}</td>
+                    <td>
+                        <a href="{{ url_for('edit_expense', id=expense[0]) }}">Edit</a>
+                    </td>
+                    <td>
+                        <form action="{{ url_for('delete_expense', id=expense[0]) }}" method="POST">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
         </table>
+
+        <h3>Total Expenses: {{ total }}</h3>
+
+        <h2>Expenses by Category</h2>
+        <ul>
+            <li>Food: {{ categories_total['food'] }}</li>
+            <li>Travel: {{ categories_total['travel'] }}</li>
+            <li>Clothes: {{ categories_total['clothes'] }}</li>
+            <li>Academics: {{ categories_total['academics'] }}</li>
+            <li>Utilities: {{ categories_total['utilities'] }}</li>
+            <li>Others: {{ categories_total['others'] }}</li>
+        </ul>
     {% else %}
         <p>No expenses added yet.</p>
     {% endif %}
-
-    </div>
-    <div class="Total Expenses">
-        <h3>Total Expenses: {{ total }}</h3>
-    </div>
 </body>
 </html>
