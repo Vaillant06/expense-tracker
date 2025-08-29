@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Expense</title>
+</head>
+<body>
+    <h1>Add a New Expense</h1>
+    <form method="POST" action="{{ url_for('add_expense') }}">
+        <label>Title:</label>
+        <input type="text" name="title" required><br><br>
+
+        <label>Amount:</label>
+        <input type="number" step="1" name="amount" required><br><br>
+
+        <label>Category:</label>
+        <input type="text" name="category" required><br><br>
+
+        <label>Description:</label>
+        <input type="text" name="description"><br><br>
+
+        <label>Date:</label>
+        <input type="date" name="date" value="{{ today }}" required><br><br>
+
+        <input type="submit">
+    </form>
+    <br>
+    <a href="{{ url_for('home') }}">Back to Home</a>
+</body>
+</html>
