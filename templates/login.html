@@ -17,13 +17,15 @@
 
         <a href="{{ url_for('dashboard') }}">Back to home</a>
 
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% for category, message in messages %}
-            <p class="{{ 'error-message' if category == 'error' else 'success-message' }} message">
-            {{ message }}
-            </p>
-        {% endfor %}
-        {% endwith %}
+        <div id="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                <p class="{{ 'error-message' if category == 'error' else 'success-message' }} message">
+                {{ message }}
+                </p>
+            {% endfor %}
+            {% endwith %}
+        </div>
     </form>
     <script src="{{ url_for('static', filename='js/flash-messages.js') }}"></script>
 </body>

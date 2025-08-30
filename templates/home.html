@@ -35,7 +35,7 @@
                     <td>{{ expense[5] }}</td>
                     <td>{{ expense[6] }}</td>
                     <td>
-                        <a href="{{ url_for('edit_expense', id=expense[1]) }}">Edit</a>
+                        <a href="{{ url_for('edit_expense', id=expense[0]) }}">Edit</a>
                     </td>
                     <td>
                         <form action="{{ url_for('delete_expense', id=expense[0]) }}" method="POST">
@@ -48,6 +48,18 @@
         </table>
 
         <a href="{{ url_for('add_expense') }}">Add New Expense</a>
+
+        <div id="flash-messages">
+            <div id="flash-messages">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% for category, message in messages %}
+                    <p class="{{ 'error-message' if category == 'error' else 'success-message' }} message">
+                    {{ message }}
+                    </p>
+                {% endfor %}
+                {% endwith %}
+            </div>
+        </div>
 
         <h3>Total Expenses: {{ total }}</h3>
 
@@ -85,5 +97,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{{ url_for('static', filename='js/chart.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/flash-messages.js') }}"></script>
 </body>
 </html>

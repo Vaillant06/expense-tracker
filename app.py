@@ -155,6 +155,7 @@ def set_budget():
         )
         conn.commit()
 
+    flash("Buget has been set successfully! You can start tracking your expenses!", "success")
     return redirect(url_for('profile'))
 
 
@@ -188,6 +189,8 @@ def add_expense():
         return redirect(url_for('profile'))
 
     today = datetime.now(timezone.utc).date().isoformat()
+
+    flash("New expense has been added successfully", "success")
     return render_template("add_expense.html", today=today)
 
 
@@ -218,6 +221,8 @@ def edit_expense(id):
                 data,
             )
             conn.commit()
+
+            flash("Expense has been updated successfully", "success")
             return redirect(url_for('profile'))
 
         expense = conn.execute(
@@ -240,6 +245,7 @@ def delete_expense(id):
         )
         conn.commit()
 
+    flash("Expense deleted successfully", "success")
     return redirect(url_for('profile'))
 
 
@@ -247,7 +253,8 @@ def delete_expense(id):
 @app.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('dashboard'))
+    flash("Logout Successful!", "success")
+    return redirect(url_for('login'))
 
 
 # ------------------------
