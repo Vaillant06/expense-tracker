@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+</head>
+<body>
+    <form action="{{ url_for('register') }}" method="POST">
+        <label for="username">Username</label>
+        <input type="text" name="username" id="username" required>
+
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" required>
+
+        <label for="confirm-password">Confirm Password</label>
+        <input type="password" name="confirm-password" id="confirm-password" required>
+
+        <label for="age">Age</label>
+        <input type="number" name="age"  id="age" min="5" required>
+
+        <button type="register">register</button>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <p class="{{ 'error-message' if category == 'error' else 'success-message' }} message">
+            {{ message }}
+            </p>
+        {% endfor %}
+        {% endwith %}
+    </form>
+    <script src="{{ url_for('static', filename='js/flash-messages.js') }}"></script>
+</body>
+</html>

@@ -1,9 +1,10 @@
-from flask import Flask, render_template, redirect, url_for, request
-import sqlite3
+from flask import Flask, session, render_template, redirect, url_for, request, flash
+from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timezone
+import sqlite3  
 
 app = Flask(__name__)
-
+app.secret_key = "supersecret"
 DB_NAME = "expense.db"
 
 
@@ -12,66 +13,179 @@ DB_NAME = "expense.db"
 # ------------------------
 def get_db_connection():
     """Open DB connection with row access by name"""
-    connection = sqlite3.connect(DB_NAME)
-    connection.row_factory = sqlite3.Row
-    return connection
+    conn = sqlite3.connect(DB_NAME)
+    conn.row_factory = sqlite3.Row
+    return conn
 
 
 # ------------------------
 # Routes
 # ------------------------
 @app.route('/')
-def home():
-    with get_db_connection() as connection:
-        cursor = connection.cursor()
+def dashboard():
+    return render_template('dashboard.html')
 
-        # Fetch all expenses
-        expenses = cursor.execute("SELECT * FROM expenses").fetchall()
 
-        # Calculate total spent
-        total = cursor.execute("SELECT SUM(amount) FROM expenses").fetchone()[0] or 0
+# -------- Register --------
+@app.route('/register', methods=["GET", "POST"])
+def register():
+    if request.method == "POST":
+        username = request.form['username']
+        age = request.form['age']
+        raw_password = request.form['password']
+        confirm_password = request.form['confirm-password']
 
-        # Group expenses by category
-        cursor.execute("""
-            SELECT category, SUM(amount) AS total
+        if raw_password != confirm_password:
+            flash("Passwords do not match!", "error")
+            return redirect(url_for('register'))
+
+        with get_db_connection() as conn:
+            existing = conn.execute(
+                "SELECT id FROM users WHERE username=?", (username,)
+            ).fetchone()
+            if existing:
+                flash("Username already exists!", "error")
+                return redirect(url_for('register'))
+
+            hashed_pw = generate_password_hash(raw_password)
+            conn.execute(
+                "INSERT INTO users (username, password, age) VALUES (?, ?, ?)",
+                (username, hashed_pw, age),
+            )
+            conn.commit()
+
+        flash("Registration successful", "success")
+        return redirect(url_for('login'))
+
+    return render_template('register.html')
+
+
+# -------- Login --------
+@app.route('/login', methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        username = request.form['username']
+        password = request.form['password']
+
+        with get_db_connection() as conn:
+            user = conn.execute(
+                "SELECT * FROM users WHERE username = ?", (username,)
+            ).fetchone()
+
+        if user and check_password_hash(user['password'], password):
+            session['user_id'] = user['id']
+            return redirect(url_for('profile'))
+
+        flash("Invalid username or password", "error")
+        return redirect(url_for('login'))
+
+    return render_template('login.html')
+
+
+# -------- User Dashboard --------
+@app.route('/user_dashboard')
+def profile():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    user_id = session['user_id']
+
+    with get_db_connection() as conn:
+        # Budget
+        budget_row = conn.execute(
+            "SELECT set_budget FROM budget WHERE user_id = ?", (user_id,)
+        ).fetchone()
+        budget = budget_row[0] if budget_row else 0
+
+        # Expenses
+        expenses = conn.execute(
+            "SELECT * FROM expenses WHERE user_id = ?", (user_id,)
+        ).fetchall()
+
+        # Total
+        total = conn.execute(
+            "SELECT SUM(amount) FROM expenses WHERE user_id = ?", (user_id,)
+        ).fetchone()[0] or 0
+
+        # Expenses by category
+        rows = conn.execute(
+            """
+            SELECT category, SUM(amount) 
             FROM expenses
+            WHERE user_id = ?
             GROUP BY category
-        """)
-        rows = cursor.fetchall()
+            """,
+            (user_id,),
+        ).fetchall()
 
-    # Convert to dict: {category: total}
     categories_total = {
-        row['category'] if row['category'] else "Uncategorized": row['total']
+        (row[0].lower() if row[0] else "uncategorized"): row[1]
         for row in rows
     }
 
-    # Ensure fixed categories exist even if empty
-    categories = ['food', 'travel', 'clothes', 'academics', 'utilities', 'others']
-    for cat in categories:
+    # Ensure fixed categories always exist
+    for cat in ['food', 'travel', 'clothes', 'academics', 'utilities', 'others']:
         categories_total.setdefault(cat, 0)
 
-    return render_template("home.html", expenses=expenses, total=total, categories_total=categories_total)
+    return render_template(
+        "home.html",
+        budget=budget,
+        expenses=expenses,
+        total=total,
+        categories_total=categories_total,
+    )
 
 
+# -------- Budget --------
+@app.route('/set_budget', methods=["POST"])
+def set_budget():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    user_id = session['user_id']
+    budget = request.form['budget']
+
+    with get_db_connection() as conn:
+        conn.execute(
+            """
+            INSERT INTO budget (user_id, set_budget)
+            VALUES (?, ?)
+            ON CONFLICT(user_id) DO UPDATE SET set_budget=excluded.set_budget
+            """,
+            (user_id, budget),
+        )
+        conn.commit()
+
+    return redirect(url_for('profile'))
+
+
+# -------- Expenses --------
 @app.route('/add_expense', methods=['GET', 'POST'])
 def add_expense():
+    if 'user_id' not in session:
+        flash("Login first!", "error")
+        return redirect(url_for('login'))
+
     if request.method == "POST":
         data = {
+            "user_id": session['user_id'],
             "title": request.form['title'],
             "amount": request.form['amount'],
-            "category": request.form['category'],
+            "category": request.form["category"].lower(),
             "date": request.form['date'],
             "description": request.form['description'],
         }
 
-        with get_db_connection() as connection:
-            connection.execute('''
-                INSERT INTO expenses (title, amount, category, date, description)
-                VALUES (:title, :amount, :category, :date, :description)
-            ''', data)
-            connection.commit()
+        with get_db_connection() as conn:
+            conn.execute(
+                """
+                INSERT INTO expenses (user_id, title, amount, category, date, description)
+                VALUES (:user_id, :title, :amount, :category, :date, :description)
+                """,
+                data,
+            )
+            conn.commit()
 
-        return redirect(url_for('home'))
+        return redirect(url_for('profile'))
 
     today = datetime.now(timezone.utc).date().isoformat()
     return render_template("add_expense.html", today=today)
@@ -79,39 +193,61 @@ def add_expense():
 
 @app.route('/edit_expense/<int:id>', methods=['GET', 'POST'])
 def edit_expense(id):
-    if request.method == "POST":
-        data = {
-            "title": request.form['title'],
-            "amount": request.form['amount'],
-            "category": request.form['category'],
-            "date": request.form['date'],
-            "description": request.form['description'],
-            "id": id,
-        }
+    if 'user_id' not in session:
+        flash("Login first!", "error")
+        return redirect(url_for('login'))
 
-        with get_db_connection() as connection:
-            connection.execute('''
+    with get_db_connection() as conn:
+        if request.method == "POST":
+            data = {
+                "title": request.form['title'],
+                "amount": request.form['amount'],
+                "category": request.form['category'].lower(),
+                "date": request.form['date'],
+                "description": request.form['description'],
+                "id": id,
+                "user_id": session['user_id'],
+            }
+            conn.execute(
+                """
                 UPDATE expenses
-                SET title=:title, amount=:amount, category=:category, date=:date, description=:description
-                WHERE id=:id
-            ''', data)
-            connection.commit()
+                SET title=:title, amount=:amount, category=:category,
+                    date=:date, description=:description
+                WHERE id=:id AND user_id=:user_id
+                """,
+                data,
+            )
+            conn.commit()
+            return redirect(url_for('profile'))
 
-        return redirect(url_for('home'))
-
-    with get_db_connection() as connection:
-        expense = connection.execute('SELECT * FROM expenses WHERE id=?', (id,)).fetchone()
+        expense = conn.execute(
+            "SELECT * FROM expenses WHERE id=? AND user_id=?",
+            (id, session['user_id']),
+        ).fetchone()
 
     return render_template('edit_expense.html', expense=dict(expense))
 
 
 @app.route('/delete_expense/<int:id>', methods=["POST"])
 def delete_expense(id):
-    with get_db_connection() as connection:
-        connection.execute("DELETE FROM expenses WHERE id=?", (id,))
-        connection.commit()
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
 
-    return redirect(url_for('home'))
+    with get_db_connection() as conn:
+        conn.execute(
+            "DELETE FROM expenses WHERE id=? AND user_id=?",
+            (id, session['user_id']),
+        )
+        conn.commit()
+
+    return redirect(url_for('profile'))
+
+
+# -------- Logout --------
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('dashboard'))
 
 
 # ------------------------
