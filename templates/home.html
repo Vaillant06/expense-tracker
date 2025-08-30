@@ -77,5 +77,13 @@
     <div>
         <a href="{{ url_for('logout') }}">Logout</a>
     </div>
+
+    <canvas id="expense-chart" 
+        data-categories='{{ categories_total | tojson }}'
+        width="250" height="250">
+    </canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='js/chart.js') }}"></script>
 </body>
 </html>
