@@ -72,10 +72,12 @@
             <li>Others: {{ categories_total['others'] }}</li>
         </ul>
 
-        <canvas id="expense-chart" 
-            data-categories='{{ categories_total | tojson }}'
-            width="250" height="250">
-        </canvas>
+        <div style="width:400px; height:400px; margin-top:20px;">
+            <canvas id="expense-chart" 
+                data-categories='{{ categories_total | tojson }}'>
+            </canvas>
+        </div>
+
         
         {% else %}
         <a href="{{ url_for('add_expense') }}">Add New Expense</a>

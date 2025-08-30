@@ -29,8 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
         },
         options: {
             responsive: true,
-            responsive: false,
-            maintainAspectRatio: false
+            maintainAspectRatio: true
         },
     });
 });

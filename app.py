@@ -122,10 +122,10 @@ def profile():
     categories_total = {
         (row[0] if row[0] else "uncategorized"): row[1]
         for row in rows
-    }
+    }   
 
     # Ensure fixed categories always exist
-    for cat in ['Food', 'Travel', 'Clothes', 'Academics', 'Utilities', 'Others']:
+    for cat in ['food', 'travel', 'clothes', 'academics', 'utilities', 'others']:
         categories_total.setdefault(cat, 0)
 
     return render_template(
@@ -174,7 +174,7 @@ def add_expense():
             "user_id": session['user_id'],
             "title": request.form['title'],
             "amount": request.form['amount'],
-            "category": request.form["category"].lower(),
+            "category": request.form["category"],
             "date": request.form['date'],
             "description": request.form['description'],
         }
