@@ -17,10 +17,15 @@
 
         <label for="category">Category:</label>
         <select id="category" name="category" required>
-            {% set all_categories = ["Food", "Travel", "Clothes", "Academics", "Utilities", "Others"] %}
-            {% for cat in all_categories %}
-                <option value="{{ cat }}" {% if expense['category'] == cat %} selected {% endif %}></option>
-            {% endfor %}
+        {% set all_categories = ["food", "travel", "clothes", "academics", "utilities", "others"] %}
+        {% for cat in all_categories %}
+            <option value="{{ cat }}"
+                {% if expense and expense['category'] == cat %}selected{% endif %}>
+                {{ cat }}
+            </option>   
+        {% endfor %}
+        </select>
+
         </select>
 
         <label for="date">Date:</label>

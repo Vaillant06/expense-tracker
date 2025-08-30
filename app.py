@@ -106,6 +106,8 @@ def profile():
             "SELECT SUM(amount) FROM expenses WHERE user_id = ?", (user_id,)
         ).fetchone()[0] or 0
 
+        remaining_budget = budget - total
+
         # Expenses by category
         rows = conn.execute(
             """
@@ -118,12 +120,12 @@ def profile():
         ).fetchall()
 
     categories_total = {
-        (row[0].lower() if row[0] else "uncategorized"): row[1]
+        (row[0] if row[0] else "uncategorized"): row[1]
         for row in rows
     }
 
     # Ensure fixed categories always exist
-    for cat in ['food', 'travel', 'clothes', 'academics', 'utilities', 'others']:
+    for cat in ['Food', 'Travel', 'Clothes', 'Academics', 'Utilities', 'Others']:
         categories_total.setdefault(cat, 0)
 
     return render_template(
@@ -132,6 +134,7 @@ def profile():
         expenses=expenses,
         total=total,
         categories_total=categories_total,
+        remaining_budget=remaining_budget
     )
 
 
@@ -205,7 +208,7 @@ def edit_expense(id):
             data = {
                 "title": request.form['title'],
                 "amount": request.form['amount'],
-                "category": request.form['category'].lower(),
+                "category": request.form['category'],
                 "date": request.form['date'],
                 "description": request.form['description'],
                 "id": id,

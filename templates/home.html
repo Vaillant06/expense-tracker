@@ -12,6 +12,7 @@
         <h2>All Expenses</h2>
         <div>
             <h3>Budget: {{ budget }}</h3>
+            <h3>Remaining Budget: {{ remaining_budget }}</h3>
         </div>
         {% if expenses %}
         <table>
@@ -50,15 +51,13 @@
         <a href="{{ url_for('add_expense') }}">Add New Expense</a>
 
         <div id="flash-messages">
-            <div id="flash-messages">
-                {% with messages = get_flashed_messages(with_categories=true) %}
-                {% for category, message in messages %}
-                    <p class="{{ 'error-message' if category == 'error' else 'success-message' }} message">
-                    {{ message }}
-                    </p>
-                {% endfor %}
-                {% endwith %}
-            </div>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                <p class="{{ 'error-message' if category == 'error' else 'success-message' }} message">
+                {{ message }}
+                </p>
+            {% endfor %}
+            {% endwith %}
         </div>
 
         <h3>Total Expenses: {{ total }}</h3>
@@ -67,11 +66,16 @@
         <ul>
             <li>Food: {{ categories_total['food'] }}</li>
             <li>Travel: {{ categories_total['travel'] }}</li>
-            <li>Clothes: {{ categories_total['clothes'] }}</li>
+            <li>Clothes: {{ categories_total['clothes']}}</li>
             <li>Academics: {{ categories_total['academics'] }}</li>
             <li>Utilities: {{ categories_total['utilities'] }}</li>
             <li>Others: {{ categories_total['others'] }}</li>
         </ul>
+
+        <canvas id="expense-chart" 
+            data-categories='{{ categories_total | tojson }}'
+            width="250" height="250">
+        </canvas>
         
         {% else %}
         <a href="{{ url_for('add_expense') }}">Add New Expense</a>
@@ -86,14 +90,10 @@
                 <button type="submit">Set Budget</button>
             </form>
     {% endif %}
+
     <div>
         <a href="{{ url_for('logout') }}">Logout</a>
     </div>
-
-    <canvas id="expense-chart" 
-        data-categories='{{ categories_total | tojson }}'
-        width="250" height="250">
-    </canvas>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{{ url_for('static', filename='js/chart.js') }}"></script>
