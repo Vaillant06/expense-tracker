@@ -1,0 +1,103 @@
+*{
+    margin: 0;
+    padding: 0;
+    border-collapse: collapse;
+    font-family: 'Poppins';
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, lightcyan, white);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+
+.container{
+    translate: 0% 25%;
+    display: flex;
+    flex-direction: column;
+    justify-content: top;
+    align-items: center;
+    background: linear-gradient(135deg, lightblue, lightyellow );
+    border: 1px solid lightblue;
+    border-radius: 40px;
+    box-shadow: 6px 6px 12px gray;
+    width: 600px;
+    height: 700px
+}
+
+.title{
+    font-weight: 600;
+    font-size: 28px;
+    margin: 40px 0px 0px 0px;
+}
+
+.description{
+    margin-top: 10px;
+}
+
+.form-content{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    margin: 50px 0px 0px;
+}   
+
+.form-content label{
+    padding-bottom: 2px;
+}
+
+.form-content input{
+    width: 400px;
+    border: 1px solid lightblue;
+    border-radius: 12px;
+    height: 40px;
+    margin-bottom: 15px;
+    padding-left: 15px;
+    outline: none;
+}
+
+.form-content input:focus{
+    border-color: 1px solid lightblue;
+    box-shadow: 0 0 6px rgba(74, 144, 226, 0.6);
+}
+
+.form-content input::content{
+    margin-left: 20px;
+}
+
+
+.action-links{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+}
+
+.action-links button{
+    border-radius: 12px;
+    padding: 15px 30px;
+    width: 50%;
+    border-color: lightblue;
+    background-color: lightblue
+}
+
+.action-links button:hover{
+    border-color: lightyellow;
+    background-color: lightyellow;
+    box-shadow: 0px 0px 6px grey;
+}
+
+.action-links a{
+    text-decoration: none;
+    padding: 10px;
+    color: black
+}
+
+.action-links a:hover{
+    text-decoration: underline;
+}

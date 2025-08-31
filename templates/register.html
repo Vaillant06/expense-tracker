@@ -3,35 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel="stylesheet">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/register.css')}}">
     <title>Register</title>
 </head>
 <body>
-    <form action="{{ url_for('register') }}" method="POST">
-        <label for="username">Username</label>
-        <input type="text" name="username" id="username" required>
+    <div class="container">
+        <h2 class="title">CREATE AN ACCOUNT</h2>
+        <p class="description">Create an account to start tracking your expenses</p>
+        <form action="{{ url_for('register') }}" method="POST" class="form-content">
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username" required>
 
-        <label for="password">Password</label>
-        <input type="password" name="password" id="password" required>
+            <label for="age">Age</label>
+            <input type="number" name="age"  id="age" min="5" required>
 
-        <label for="confirm-password">Confirm Password</label>
-        <input type="password" name="confirm-password" id="confirm-password" required>
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" required>
 
-        <label for="age">Age</label>
-        <input type="number" name="age"  id="age" min="5" required>
+            <label for="confirm-password">Confirm Password</label>
+            <input type="password" name="confirm-password" id="confirm-password" required>
 
-        <button type="register">register</button>
-        <a href="{{ url_for('dashboard') }}">Back to home</a>
+            <div class="action-links">
+                <button type="submit">Create an account</button>
+                <a href="{{ url_for('dashboard') }}">Back to home</a>
+            </div>
 
-        <div id="flash-messages">
-            {% with messages = get_flashed_messages(with_categories=true) %}
-            {% for category, message in messages %}
-                <p class="{{ 'error-message' if category == 'error' else 'success-message' }} message">
-                {{ message }}
-                </p>
-            {% endfor %}
-            {% endwith %}
-        </div>
-    </form>
+            <div id="flash-messages">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% for category, message in messages %}
+                    <p class="{{ 'error-message' if category == 'error' else 'success-message' }} message">
+                    {{ message }}
+                    </p>
+                {% endfor %}
+                {% endwith %}
+            </div>
+        </form>
+    </div>
+
     <script src="{{ url_for('static', filename='js/flash-messages.js') }}"></script>
 </body>
 </html>

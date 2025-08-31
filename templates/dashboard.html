@@ -3,12 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Expense Tracker Dashboard</title>
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel="stylesheet">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/dashboard.css')}}">
+    <title>Perosnal Expense Tracker</title>
 </head>
 <body>
-    <div>
-        <a href="{{  url_for('login')  }}">Login</a>
-        <a href="{{ url_for('register')  }}">Register</a>
+    <div class="container">
+        <h2 class="title">PERSONAL EXPENSE TRACKER</h2>
+        <p class="description">Get your personalized expense tracker exclusively for you</p>
+        <div class="action-links">
+            <a href="{{  url_for('login')  }}">Sign in</a>
+            <a href="{{ url_for('register')  }}">Create Account</a>
+        </div>
     </div>
     
     <div id="flash-messages">
