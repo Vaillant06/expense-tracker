@@ -15,16 +15,17 @@ body{
 }
 
 .container{
-    translate: 0% 20%;
+    translate: 0% 40%;
     display: flex;
     flex-direction: column;
     justify-content: top;
     align-items: center;
-    background: linear-gradient(135deg, wheat, white);
+    background-color: lightgrey;
+    border: 1px solid lightgrey;
     border-radius: 40px;
-    box-shadow: 6px 6px 12px gray;
-    width: 600px;
-    height: 800px
+    box-shadow: 6px 6px 12px grey;
+    width: 500px;
+    height: 600px   
 }
 
 .title{
@@ -50,7 +51,7 @@ body{
 
 .form-content input{
     width: 400px;
-    border: 1px solid wheat;
+    border: 1px solid lightgrey;
     border-radius: 12px;
     height: 40px;
     margin-bottom: 15px;
@@ -59,8 +60,8 @@ body{
 }
 
 .form-content input:focus{
-    border-color: 1px solid wheat;
-    box-shadow: 0 0 6px wheat;
+    border-color: 1px solid grey;
+    box-shadow: 0 0 12px grey;
 }
 
 .form-content input::content{
@@ -73,43 +74,40 @@ body{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 30px;
+    margin-top: 40px;
 }
 
 .action-links button{
     border-radius: 12px;
     padding: 15px 30px;
     width: 50%;
-    border-color: wheat;
-    background-color: wheat
+    border: none;
+    background-color: whitesmoke;
+    margin-bottom: 30px
 }
 
 .action-links button:hover{
-    border-color: rgb(212, 176, 103)        ;
-    background-color: rgb(212, 176, 103) ;
-    box-shadow: 0px 0px 6px grey;
+    border: lightcyan;
+    background-color: lightcyan;
+    box-shadow: 0px 0px 10px grey;
 }
 
-.action-links a{
+.register a{
+    color: darkviolet
+}
+
+a{
     text-decoration: none;
+    margin-top: 10px;
 }
 
 .action-links a:hover{
     text-decoration: underline;
 }
 
-.login{
-    margin-top: 30px;
-    margin-bottom: 10px;
-}
-
-.login a{
-    color: darkviolet
-}
-
 #flash-messages{
     text-align: center;
-    margin-top: 20px
+    margin-top: 40px
 }
 
 .error-message{

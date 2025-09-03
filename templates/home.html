@@ -3,19 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel="stylesheet">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/user_dashboard.css')}}">
     <title>Expense Tracker</title>
 </head>
 <body>
-    <h1>Expense Tracker</h1>
-
-    {% if budget %}
-        <h2>All Expenses</h2>
-        <div>
-            <h3>Budget: {{ budget }}</h3>
-            <h3>Remaining Budget: {{ remaining_budget }}</h3>
+    <div class="sidebar">
+        <div class="profile">
+            <h4 class="description">Your Profile</h4>
+            <div class="info">
+                <h2 class="username">{{ username }}</h2>
+                <h4 class="phone-number">Phone : +91 8248603128</h4>
+                <h4 class="age">AGE : {{ age }}</h4>
+            </div>            
+            <div class="action-links">
+                <a href="#">Edit Profile</a>
+                {% if budget %}
+                    <a href="#">Update Budget</a>
+                {% else %}
+                    <a href="#">Set Budget</a>
+                {% endif %}
+                <a href="{{ url_for('logout') }}">Logout</a>
+            </div>
         </div>
+        <div class="expenses-by-categories">    
+            <h2>Expenses by Category</h2>
+            <div>
+                <ul>
+                    <h4>Food: {{ categories_total['food'] }}</h4>
+                    <h4>Travel: {{ categories_total['travel'] }}</h4>
+                    <h4>Clothes: {{ categories_total['clothes']}}</h4>
+                    <h4>Academics: {{ categories_total['academics'] }}</h4>
+                    <h4>Utilities: {{ categories_total['utilities'] }}</h4>
+                    <h4>Others: {{ categories_total['others'] }}</h4>
+                </ul>
+                <div>
+                    <canvas id="expense-chart"
+                        data-categories='{{ categories_total | tojson }}'>
+                    </canvas>
+                </div>  
+            </div>
+        </div>
+    </div>
+    <div class="main-content">
+        <h1 class="title">Expense Tracker</h1>    
+        {% if budget %}
+        <div class="budget">
+            <h2>Budget: Rs. <span class="amount">{{ budget }}</span></h2>
+            <h2>Total Expenses: Rs. <span class="spent-amount">{{ total }}</span></h2>
+            <h2>Remaining Budget: Rs. <span class="remaining-amount">{{ remaining_budget }}</span></h2>
+        </div>
+        <div class="utilities">
+            <h2 class="main-description">All Expenses</h2>   
+            <a href="{{ url_for('add_expense') }}" class="new-expense"> + Add New Expense</a>  
+        </div> 
         {% if expenses %}
-        <table>
+        <table class="expenses-table">
             <thead>
                 <tr>
                     <th>Title</th>
@@ -36,19 +79,17 @@
                     <td>{{ expense[5] }}</td>
                     <td>{{ expense[6] }}</td>
                     <td>
-                        <a href="{{ url_for('edit_expense', id=expense[0]) }}">Edit</a>
+                        <a href="{{ url_for('edit_expense', id=expense[0]) }}" class="edit-expense">Edit</a>
                     </td>
                     <td>
                         <form action="{{ url_for('delete_expense', id=expense[0]) }}" method="POST">
-                            <button type="submit">Delete</button>
+                            <button type="submit" class="delete-button">Delete</button>
                         </form>
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-
-        <a href="{{ url_for('add_expense') }}">Add New Expense</a>
 
         <div id="flash-messages">
             {% with messages = get_flashed_messages(with_categories=true) %}
@@ -59,42 +100,20 @@
             {% endfor %}
             {% endwith %}
         </div>
-
-        <h3>Total Expenses: {{ total }}</h3>
-
-        <h2>Expenses by Category</h2>
-        <ul>
-            <li>Food: {{ categories_total['food'] }}</li>
-            <li>Travel: {{ categories_total['travel'] }}</li>
-            <li>Clothes: {{ categories_total['clothes']}}</li>
-            <li>Academics: {{ categories_total['academics'] }}</li>
-            <li>Utilities: {{ categories_total['utilities'] }}</li>
-            <li>Others: {{ categories_total['others'] }}</li>
-        </ul>
-
-        <div style="width:400px; height:400px; margin-top:20px;">
-            <canvas id="expense-chart" 
-                data-categories='{{ categories_total | tojson }}'>
-            </canvas>
-        </div>
-
-        
+    
         {% else %}
         <a href="{{ url_for('add_expense') }}">Add New Expense</a>
         {% endif %}
 
-    {% else %}
-        <p>Start tracking your expenses</p>
-        <h3>Set Budget</h3>
-            <form action="{{ url_for('set_budget') }}" method="POST">
-                <label for="budget">Budget:</label>
-                <input type="number" name="budget" id="budget" placeholder="Enter your budget" min="100" required>
-                <button type="submit">Set Budget</button>
-            </form>
-    {% endif %}
-
-    <div>
-        <a href="{{ url_for('logout') }}">Logout</a>
+        {% else %}
+            <p>Start tracking your expenses</p>
+            <h3>Set Budget</h3>
+                <form action="{{ url_for('set_budget') }}" method="POST">
+                    <label for="budget">Budget:</label>
+                    <input type="number" name="budget" id="budget" placeholder="Enter your budget" min="100" required>
+                    <button type="submit">Set Budget</button>
+                </form>
+        {% endif %}
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

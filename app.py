@@ -13,9 +13,9 @@ DB_NAME = "expense.db"
 # ------------------------
 def get_db_connection():
     """Open DB connection with row access by name"""
-    conn = sqlite3.connect(DB_NAME)
-    conn.row_factory = sqlite3.Row
-    return conn
+    connection = sqlite3.connect(DB_NAME)
+    connection.row_factory = sqlite3.Row
+    return connection
 
 
 # ------------------------
@@ -76,7 +76,7 @@ def login():
             session['user_id'] = user['id']
             return redirect(url_for('profile'))
 
-        flash("Invalid username or password", "error")
+        flash("Invalid username or password!", "error")
         return redirect(url_for('login'))
 
     return render_template('login.html')
@@ -85,11 +85,18 @@ def login():
 # -------- User Dashboard --------
 @app.route('/user_dashboard')
 def profile():
-    if 'user_id' not in session:
+    if 'user_id' not in session:    
         return redirect(url_for('login'))
     user_id = session['user_id']
 
     with get_db_connection() as conn:
+        # User details
+        user = conn.execute(
+            "SELECT * from users WHERE id = ?", (user_id,)
+        ).fetchone()
+        username = user['username']
+        age = user['age']
+
         # Budget
         budget_row = conn.execute(
             "SELECT set_budget FROM budget WHERE user_id = ?", (user_id,)
@@ -98,7 +105,7 @@ def profile():
 
         # Expenses
         expenses = conn.execute(
-            "SELECT * FROM expenses WHERE user_id = ?", (user_id,)
+            "SELECT * FROM expenses WHERE user_id = ? ORDER BY date DESC", (user_id,)
         ).fetchall()
 
         # Total
@@ -130,6 +137,8 @@ def profile():
 
     return render_template(
         "home.html",
+        username = username,
+        age = age,
         budget=budget,
         expenses=expenses,
         total=total,
