@@ -1,0 +1,113 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins';
+}
+
+body{
+    display: flex;
+    justify-content: center;
+}
+
+.container{
+    
+    margin-top: 100px;
+    padding: 50px;
+    width:1500px;
+    border: 2px solid orange;
+    border-radius: 40px ;
+}
+
+.title{
+    text-align: center; 
+}
+
+.form-content{
+    margin-top: 50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.input-wrap{
+    display: flex;
+    flex-direction: column;
+
+}
+
+.form-content label{
+    text-align: center;
+}
+
+.form-content input, select{
+    text-align: center;
+    margin-top: 20px;
+    border: none;
+    border-bottom: 2px solid orange;
+    height: 50px;
+    width: 280px
+    
+}
+
+.form-content select{
+    background-color: white;
+    margin-top: 20px;
+    height: 52px;
+    width: 280px;
+    appearance: none;
+    outline: none;
+    padding: 0 10px;
+}
+
+input::placeholder{
+    text-align: center;
+    transition: color 0.2s ease;
+}
+
+input:focus, select:focus{
+    border: none;
+    border-bottom: 2px solid rgb(173, 113, 2);
+    outline: none; 
+}
+
+input:focus::placeholder{
+    color: transparent;
+}
+
+.action-links{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 40px;
+}
+
+.action-links input{
+    margin-top: 20px;
+    height: 50px;
+    width: 280px;
+    border: 1px solid orange;
+    border-radius: 12px;
+    color: white;
+    background-color: orange;
+}
+
+.action-links a{
+    text-decoration: none;
+    text-align: center;
+    margin-top: 10px;
+    border-radius: 12px;
+    padding: 12px 20px;
+    width: 240px;
+    color: white;
+    background-color: red;
+}
+
+.action-links input:hover{
+    background-color: darkorange;
+    box-shadow: 0px 0px 6px grey;
+}
+
+.action-links a:hover{
+    background-color: rgb(207, 1, 1);
+    box-shadow: 0px 0px 6px solid grey;
+}

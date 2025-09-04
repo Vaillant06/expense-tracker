@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel="stylesheet">
-    <link rel="stylesheet" href="{{url_for('static', filename='css/user_dashboard.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/home.css')}}">
     <title>Expense Tracker</title>
 </head>
 <body>
@@ -26,16 +26,17 @@
                 <a href="{{ url_for('logout') }}">Logout</a>
             </div>
         </div>
+        {% if budget %}
         <div class="expenses-by-categories">    
             <h2>Expenses by Category</h2>
             <div>
                 <ul>
-                    <h4>Food: {{ categories_total['food'] }}</h4>
-                    <h4>Travel: {{ categories_total['travel'] }}</h4>
-                    <h4>Clothes: {{ categories_total['clothes']}}</h4>
-                    <h4>Academics: {{ categories_total['academics'] }}</h4>
-                    <h4>Utilities: {{ categories_total['utilities'] }}</h4>
-                    <h4>Others: {{ categories_total['others'] }}</h4>
+                    <h4>Food: <span class="values">{{ categories_total['food'] }}</span></h4>
+                    <h4>Travel: <span class="values">{{ categories_total['travel'] }}</span></h4>
+                    <h4>Clothes: <span class="values">{{ categories_total['clothes']}}</span></h4>
+                    <h4>Academics: <span class="values">{{ categories_total['academics'] }}</span></h4>
+                    <h4>Utilities: <span class="values">{{ categories_total['utilities'] }}</span></h4>
+                    <h4>Others: <span class="values">{{ categories_total['others'] }}</span></h4>
                 </ul>
                 <div>
                     <canvas id="expense-chart"
@@ -43,6 +44,16 @@
                     </canvas>
                 </div>  
             </div>
+        </div>
+        {% endif %}
+        <div id="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                <p class="{{ 'error-message' if category == 'error' else 'success-message' }} message">
+                {{ message }}
+                </p>
+            {% endfor %}
+            {% endwith %}
         </div>
     </div>
     <div class="main-content">
@@ -90,16 +101,6 @@
                 {% endfor %}
             </tbody>
         </table>
-
-        <div id="flash-messages">
-            {% with messages = get_flashed_messages(with_categories=true) %}
-            {% for category, message in messages %}
-                <p class="{{ 'error-message' if category == 'error' else 'success-message' }} message">
-                {{ message }}
-                </p>
-            {% endfor %}
-            {% endwith %}
-        </div>
     
         {% else %}
         <a href="{{ url_for('add_expense') }}">Add New Expense</a>
