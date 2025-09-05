@@ -72,20 +72,6 @@ body{
     width: 200px
 }
 
-.logout-link a{
-    display: flex;
-    justify-content: center;
-    text-decoration: none;
-    padding: 15px 20px;
-    margin-bottom: 15px;
-    color: white;
-    background-color: red;
-    border: 1px solid rgb(from color r g b);
-    border-radius: 12px;
-    width: 200px
-}
-
-
 .action-links a:hover{
     background-color: rgb(75, 200, 255);
     box-shadow: 0px 0px 10px rgb(75, 200, 255);
@@ -269,5 +255,62 @@ tr td:last-child {
 
 .success-message{
     color: green;
+}
+
+.set-budget{
+
+}
+
+.set-budget p{
+    margin-top: 10px;
+}
+
+.set-budget h3{
+    margin-top: 10px
+}
+
+.set-budget form{
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    margin-top: 20px;
+}
+
+.set-budget input{
+    margin-top: 10px;
+    height: 40px;
+    width: 200px;
+    border-bottom: 2px solid rgb(75, 159, 255);
+    text-align: center;
+}
+
+.set-budget input:focus{
+    border: none;
+    outline: none;
+    border-bottom: 2px solid rgb(0, 60, 128);
+}
+
+.set-budget input::placeholder{
+    text-align: center;
+}
+
+.set-budget input:focus::placeholder{
+    color: transparent;
+}
+
+.set-budget button{
+    margin-top: 20px;
+    width: 200px;
+    padding: 15px 20px;
+    margin-bottom: 15px;
+    color: white;
+    background-color: green;
+    border: 1px solid rgb(from color r g b);
+    border-radius: 12px;
+}
+
+.set-budget button:hover{
+    background-color: darkgreen;
+    box-shadow: 0px 0px 6px rgb(0, 63, 0);
 }
 

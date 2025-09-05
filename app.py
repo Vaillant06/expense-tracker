@@ -33,6 +33,7 @@ def register():
         username = request.form['username']
         age = request.form['age']
         raw_password = request.form['password']
+        phone = request.form['phone']
         confirm_password = request.form['confirm-password']
 
         if raw_password != confirm_password:
@@ -40,17 +41,24 @@ def register():
             return redirect(url_for('register'))
 
         with get_db_connection() as conn:
-            existing = conn.execute(
+            existing_user = conn.execute(
                 "SELECT id FROM users WHERE username=?", (username,)
             ).fetchone()
-            if existing:
+            existing_phone = conn.execute(
+                "SELECT phone FROM  users where phone=?", (phone,)
+            ).fetchone()
+            if existing_user:
                 flash("Username already exists!", "error")
                 return redirect(url_for('register'))
+            
+            if existing_phone:
+                flash("Phone number exists!", "error")
+                return redirect(url_for('register')) 
 
             hashed_pw = generate_password_hash(raw_password)
             conn.execute(
-                "INSERT INTO users (username, password, age) VALUES (?, ?, ?)",
-                (username, hashed_pw, age),
+                "INSERT INTO users (username, phone, password, age) VALUES (?, ?, ?, ?)",
+                (username, phone, hashed_pw, age),
             )
             conn.commit()
 
@@ -96,6 +104,7 @@ def profile():
         ).fetchone()
         username = user['username']
         age = user['age']
+        phone = user['phone']
 
         # Budget
         budget_row = conn.execute(
@@ -139,6 +148,7 @@ def profile():
         "home.html",
         username = username,
         age = age,
+        phone = phone,
         budget=budget,
         expenses=expenses,
         total=total,
