@@ -102,6 +102,7 @@ def profile():
         user = conn.execute(
             "SELECT * from users WHERE id = ?", (user_id,)
         ).fetchone()
+        user_id = user['id']
         username = user['username']
         age = user['age']
         phone = user['phone']
@@ -146,6 +147,7 @@ def profile():
 
     return render_template(
         "home.html",
+        user_id = user_id,
         username = username,
         age = age,
         phone = phone,
@@ -180,6 +182,43 @@ def set_budget():
     flash("Buget has been set successfully! You can start tracking your expenses!", "success")
     return redirect(url_for('profile'))
 
+
+@app.route('/update-budget/<int:user_id>', methods=['GET', 'POST'])
+def update_budget(user_id):
+    if 'user_id' not in session:
+        return redirect('url_for(login)')
+    
+    if request.method == 'POST':
+        data = {
+            "new_budget": request.form['budget'],
+            "user_id": session['user_id']
+        }
+        
+        connection = get_db_connection()
+        budget = connection.execute(
+            "SELECT * FROM budget WHERE user_id=?", (user_id,)
+        ).fetchone()
+        old_budget = budget['set_budget']
+
+        if str("new_budget") == str(old_budget):
+            flash("Budget is not updated", "error")
+            redirect(url_for('profile'))
+
+        connection = get_db_connection()
+        connection.execute(
+            """
+            UPDATE budget
+            SET set_budget=:new_budget, user_id=:user_id
+            WHERE user_id=:user_id
+            """, 
+            data
+        )
+        connection.commit()
+
+        flash("Budget has been updated!", "success")
+        return redirect(url_for('profile'))
+    
+    return render_template('home.html')
 
 # -------- Expenses --------
 @app.route('/add_expense', methods=['GET', 'POST'])

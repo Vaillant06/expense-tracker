@@ -19,7 +19,17 @@
             <div class="action-links">
                 <a href="#">Edit Profile</a>
                 {% if budget %}
-                    <a href="#">Update Budget</a>
+                    <a href="javascript:void(0);" onclick="openModal()">Update Budget</a>
+                    <div id="budgetModal" class="modal">
+                        <div class="modal-content">
+                            <span class="close" onclick="closeModal()">&times;</span>
+                            <h3>Update Budget</h3>
+                            <form action="{{ url_for('update_budget', user_id=user_id) }}" method="POST">
+                                <input type="number" name="budget" value="{{ budget }}" required>
+                                <button type="submit">Save</button>
+                            </form>
+                        </div>
+                    </div>
                 {% else %}
                     <a href="#">Set Budget</a>
                 {% endif %}
@@ -118,5 +128,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{{ url_for('static', filename='js/chart.js') }}"></script>
     <script src="{{ url_for('static', filename='js/flash-messages.js') }}"></script>
+    <script src="{{url_for('static', filename='js/modal.js')}}"></script>
+
 </body>
 </html>

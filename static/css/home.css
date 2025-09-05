@@ -77,6 +77,65 @@ body{
     box-shadow: 0px 0px 10px rgb(75, 200, 255);
 }
 
+.modal {
+  display: none; 
+  position: fixed; 
+  z-index: 1000; 
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+}
+.modal-content {
+  background: white;
+  margin: 15% auto;
+  padding: 20px;
+  width: 300px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.modal-content input{
+    margin-top: 20px;
+    text-align: center;
+    height: 40px;
+    border-bottom: 1px solid black
+}
+
+.modal-content input::placeholder{
+    text-align: center;
+}
+
+.modal-content input:focus{
+    outline: none;
+
+}
+
+.modal-content input:focus::placeholder{
+    color: transparent;
+}
+
+.close{
+
+    float: right;
+    cursor: pointer;
+font-size: 22px;
+}
+
+.modal-content button{
+    margin-top: 20px;
+    height: 50px;
+    width: 100px;
+    color: white;
+    background-color: green;
+    border: 1px solid green;
+    border-radius: 10px;
+}
+
+.modal-content button:hover{
+    background-color: darkgreen;
+    box-shadow: 0px 0px 6px solid rgb(0, 77, 0)
+}
+
 .expenses-by-categories{
     padding-top: 10px;
     padding-right: 30px;
@@ -207,7 +266,7 @@ tbody td{
 table tbody tr:hover td{
     background-color: rgb(75, 200, 255);
     cursor: pointer;
-    box-shadow: 0px 0px 10px rgb(75, 200, 255);
+    box-shadow: 0px 0px 6px rgb(75, 200, 255);
 }
 
 tr td:first-child {
@@ -255,10 +314,6 @@ tr td:last-child {
 
 .success-message{
     color: green;
-}
-
-.set-budget{
-
 }
 
 .set-budget p{
