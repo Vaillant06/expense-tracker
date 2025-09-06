@@ -247,11 +247,11 @@ def add_expense():
             )
             conn.commit()
 
+        flash("New expense has been added successfully", "success")
         return redirect(url_for('profile'))
 
     today = datetime.now(timezone.utc).date().isoformat()
 
-    flash("New expense has been added successfully", "success")
     return render_template("add_expense.html", today=today)
 
 

@@ -1,272 +1,269 @@
-*{
-    border: 0;
+/* Global Reset */
+* {
     margin: 0;
     padding: 0;
-    font-family: 'Poppins'
+    border: 0;
+    font-family: 'Poppins', sans-serif;
 }
 
-body{
+body {
     min-height: 100vh;
     display: flex;
 }
 
-.sidebar{
-    margin-left: 20px;
-    margin-top: 20px;
+/* Sidebar */
+.sidebar {
+    margin: 20px 0 0 20px;
     display: flex;
     flex-direction: column;
-    justify-content: top;
     align-items: center;
-    align-content: center;
     width: 300px;
     height: 500px;
     padding-right: 25px;
 }
 
-.description{
+.description {
     text-align: center;
     margin-top: 30px;
-    border-bottom: 1px solid black;
     padding-bottom: 10px;
+    border-bottom: 1px solid black;
 }
 
-.info{
+.info {
     margin: 30px;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-.username, .phone-number, .age{
+.username, .phone-number, .age {
     text-align: center;
 }
 
-.username{
+.username {
     color: rgb(75, 159, 255);
-    cursor: pointer
+    cursor: pointer;
 }
 
-.phone-number, .age{
+.phone-number, .age {
     margin-top: 10px;
     color: grey;
-    cursor: pointer
+    cursor: pointer;
 }
 
-.action-links{
+.action-links {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    align-items: center;
     padding-top: 20px;
 }
 
-.action-links a{
+.action-links a {
     display: flex;
     justify-content: center;
-    text-decoration: none;
-    padding: 15px 20px;
+    width: 200px;
     margin-bottom: 15px;
+    padding: 15px 20px;
     color: white;
     background-color: rgb(75, 159, 255);
-    border: 1px solid rgb(from color r g b);
     border-radius: 12px;
-    width: 200px
+    text-decoration: none;
 }
 
-.action-links a:hover{
-    background-color: rgb(75, 200, 255);
-    box-shadow: 0px 0px 10px rgb(75, 200, 255);
+.action-links a:hover {
+    background-color: rgb(75, 200, 255);    
+    transition: 0.1s ease-in;
 }
 
+/* Modal */
 .modal {
-  display: none; 
-  position: fixed; 
-  z-index: 1000; 
-  left: 0; top: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.5);
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
 }
+
 .modal-content {
-  background: white;
-  margin: 15% auto;
-  padding: 20px;
-  width: 300px;
-  border-radius: 8px;
-  text-align: center;
+    background: white;
+    margin: 15% auto;
+    padding: 20px;
+    width: 300px;
+    border-radius: 8px;
+    text-align: center;
 }
 
-.modal-content input{
+.modal-content input {
     margin-top: 20px;
-    text-align: center;
     height: 40px;
-    border-bottom: 1px solid black
+    text-align: center;
+    border-bottom: 1px solid black;
 }
 
-.modal-content input::placeholder{
+.modal-content input::placeholder {
     text-align: center;
 }
 
-.modal-content input:focus{
+.modal-content input:focus {
     outline: none;
-
 }
 
-.modal-content input:focus::placeholder{
+.modal-content input:focus::placeholder {
     color: transparent;
 }
 
-.close{
-
+.close {
     float: right;
+    font-size: 22px;
     cursor: pointer;
-font-size: 22px;
 }
 
-.modal-content button{
+.modal-content button {
     margin-top: 20px;
-    height: 50px;
     width: 100px;
+    height: 50px;
     color: white;
     background-color: green;
     border: 1px solid green;
     border-radius: 10px;
 }
 
-.modal-content button:hover{
+.modal-content button:hover {
     background-color: darkgreen;
-    box-shadow: 0px 0px 6px solid rgb(0, 77, 0)
+    box-shadow: 0 0 6px rgb(0, 77, 0);
 }
 
-.expenses-by-categories{
-    padding-top: 10px;
-    padding-right: 30px;
-    border-right: 1px solid black;
+/* Expenses by categories */
+.expenses-by-categories {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
-    padding-left: 20px;
+    padding: 10px 30px 0 20px;
+    border-right: 1px solid black;
 }
 
-.expenses-by-categories h2{
-    padding-top: 10px ;
+.expenses-by-categories h2 {
+    padding-top: 10px;
     border-top: 1px solid black;
 }
 
-.expenses-by-categories ul{
+.expenses-by-categories ul {
     margin-top: 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.values{
+.values {
     color: rgb(75, 159, 255);
 }
 
-#expense-chart{
+/* Chart & Flash messages */
+#expense-chart {
     margin-top: 30px;
-    border-bottom: 1px solid black;
     padding-bottom: 20px;
     width: 100%;
     display: flex;
     justify-content: center;
-    align-content: center;
+    border-bottom: 1px solid black;
+    max-width: 100%;
+    height: auto !important;
 }
 
-#flash-messages{
+#flash-messages {
     margin-top: 30px;
+    margin-bottom: 30px;
+    text-align: center;
     font-weight: 600;
     font-size: large;
-    text-align: center;
 }
 
-.main-content{
+/* Main Content */
+.main-content {
     margin-top: 20px;
     width: 75%;
-    border-left: 1px solid black;
     padding-left: 30px;
+    border-left: 1px solid black;
 }
 
-.utilities{
+.utilities {
     display: flex;
     justify-content: space-between;
 }
 
-.main-description{
+.main-description {
     margin-top: 30px;
 }
 
-.new-expense{
-    text-decoration: none;
+.new-expense {
     display: flex;
-    justify-content: right;
+    justify-content: flex-end;
+    margin-top: 20px;
+    padding: 15px 20px;
     width: fit-content;
     color: white;
-    border: 1px solid green;
     background-color: green;
+    border: 1px solid green;
     border-radius: 12px;
-    padding: 15px 20px;
-    margin-top: 20px;
+    text-decoration: none;
 }
 
-.new-expense:hover{
+.new-expense:hover {
     background-color: rgb(0, 83, 0);
 }
 
-.title{
+.title {
     text-align: center;
+    padding-bottom: 15px;
     border-bottom: 1px solid black;
-    padding-bottom: 15px ;
 }
 
-.budget{
+.budget {
     margin-top: 30px;
-    border-bottom: 1px solid black;
     padding-bottom: 20px;
+    border-bottom: 1px solid black;
     color: rgb(41, 41, 41);
 }
 
-.amount{
-    color:rgb(32, 221, 48)
+.amount { color: rgb(32, 221, 48); }
+.spent-amount { color: #ff9800; } 
+.remaining-amount { color: red; }
+
+button, .edit-expense, .delete-button, .new-expense {
+    transition: 0.2s ease-in-out;
 }
 
-.spent-amount{
-    color: gold
-}
-
-.remaining-amount{
-    color: red
-}
-
-table{
+/* Table */
+table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0 30px;
 }
 
-thead th{
+thead th {
+    padding: 20px;
+    text-align: center;
+    font-size: large;
     color: black;
     background-color: white;
-    padding: 20px;
     border-bottom: 1px solid rgb(75, 159, 255);
-    text-align: center;
-    font-size: large;
 }
 
-tbody td{
+tbody td {
+    padding: 20px;
     text-align: center;
     vertical-align: middle;
-    background-color: rgb(75, 159, 255);
     font-size: large;
-    padding: 20px;
-    color: white
-}   
+    color: white;
+    background-color: rgb(75, 159, 255);
+}
 
-
-table tbody tr:hover td{
-    background-color: rgb(75, 200, 255);
+table tbody tr:hover td {
     cursor: pointer;
-    box-shadow: 0px 0px 6px rgb(75, 200, 255);
+    transition: 0.1s ease-in;
+    background-color: rgb(75, 200, 255);
 }
 
 tr td:first-child {
@@ -279,93 +276,239 @@ tr td:last-child {
     border-bottom-right-radius: 12px;
 }
 
+/* Buttons */
 .edit-expense {
-    text-decoration: none;
-    border: 1px solid orange;
-    background-color: orange;
-    border-radius: 12px;
-    color: white;
     padding: 10px 30px;
-
+    color: white;
+    background-color: orange;
+    border: 1px solid orange;
+    border-radius: 12px;
+    text-decoration: none;
 }
 
-.edit-expense:hover{
+.edit-expense:hover {
     background-color: rgb(204, 133, 1);
-    border: 1px solid rgb(204, 133, 1);
+    border-color: rgb(204, 133, 1);
 }
 
-.delete-button{
+.delete-button {
+    padding: 10px 20px;
+    font-size: large;
+    color: white;
     background-color: red;
     border: 1px solid red;
-    padding: 10px 20px;
     border-radius: 12px;
-    color: white;
-    font-size: large;
 }
 
-.delete-button:hover{
-    background-color: rgb(184, 1, 1); 
-    border: 1px solid rgb(184, 1, 1);   
+.delete-button:hover {
+    background-color: rgb(184, 1, 1);
+    border-color: rgb(184, 1, 1);
 }
 
-.error-message{
-    color: red;
-}
+/* Messages */
+.error-message { color: red; }
+.success-message { color: green; }
 
-.success-message{
-    color: green;
-}
-
-.set-budget p{
+/* Budget Form */
+.set-budget p, 
+.set-budget h3 {
     margin-top: 10px;
 }
 
-.set-budget h3{
-    margin-top: 10px
-}
-
-.set-budget form{
+.set-budget form {
     display: flex;
     flex-direction: column;
-    justify-content: left;
     margin-top: 20px;
 }
 
-.set-budget input{
+.set-budget input {
     margin-top: 10px;
-    height: 40px;
     width: 200px;
-    border-bottom: 2px solid rgb(75, 159, 255);
+    height: 40px;
     text-align: center;
+    border-bottom: 2px solid rgb(75, 159, 255);
 }
 
-.set-budget input:focus{
-    border: none;
+.set-budget input:focus {
     outline: none;
     border-bottom: 2px solid rgb(0, 60, 128);
 }
 
-.set-budget input::placeholder{
+.set-budget input::placeholder {
     text-align: center;
 }
 
-.set-budget input:focus::placeholder{
+.set-budget input:focus::placeholder {
     color: transparent;
 }
 
-.set-budget button{
-    margin-top: 20px;
+.set-budget button {
+    margin: 20px 0 15px;
     width: 200px;
     padding: 15px 20px;
-    margin-bottom: 15px;
     color: white;
     background-color: green;
-    border: 1px solid rgb(from color r g b);
+    border: 1px solid green;
     border-radius: 12px;
 }
 
-.set-budget button:hover{
+.set-budget button:hover {
     background-color: darkgreen;
-    box-shadow: 0px 0px 6px rgb(0, 63, 0);
+    box-shadow: 0 0 6px rgb(0, 63, 0);
 }
+
+
+/* ========== RESPONSIVE DESIGN ========== */
+@media (max-width: 1024px) {
+    body {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        margin: 0;
+        padding: 20px;
+        border-right: none;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .main-content {
+        width: 100%;
+        border-left: none;
+        padding: 20px;
+    }
+
+    .utilities {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .action-links a {
+        width: 100%;
+        font-size: 14px;
+    }
+
+    .expenses-by-categories {
+        padding: 10px;
+    }
+
+    #expense-chart {
+        width: 100% ;
+        max-height: 250px;
+    }
+
+    table {
+        font-size: 14px;
+    }
+
+    thead th, tbody td {
+        padding: 10px;
+    }
+
+    .edit-expense, .delete-button {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar{
+        padding: 0;
+    }
+
+    .username {
+        font-size: 18px;
+    }
+
+    .phone-number, .age {
+        font-size: 14px;
+    }
+
+    .budget h2 {
+        font-size: 16px;
+    }
+
+    .action-links{
+        padding-top: 0;
+    }
+
+    .main-content{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;    
+        padding-left: 0px;
+    }
+
+    .budget{
+        text-align: center;
+    }
+
+    .title {
+        font-size: 20px;
+    }
+
+    .utilities h2{
+        padding-left: 25px;
+    }
+
+    .expenses-table{    
+        margin-top: 20px;
+    }
+
+    table, thead, tbody, th, td, tr {
+        display: block;
+        padding: 10px;
+    }
+
+    td{
+        min-height: 40px;
+    }
+
+    thead {
+        display: none; 
+    }
+
+    tbody td {
+        text-align: left;
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+    }
+
+    tbody tr {
+        margin-bottom: 15px;
+        display: block;
+        border-radius: 12px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    tbody td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+        color: #333;
+    }
+
+    tr td:first-child {
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+    }
+
+    tr td:last-child {
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
+    }
+
+    .edit-expense{
+        padding: 10px 20px;
+        width: 100px;
+    }
+}
+
 

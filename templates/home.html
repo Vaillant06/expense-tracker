@@ -72,7 +72,11 @@
         <div class="budget">
             <h2>Budget: Rs. <span class="amount">{{ budget }}</span></h2>
             <h2>Total Expenses: Rs. <span class="spent-amount">{{ total }}</span></h2>
+            {% if total > budget %}
+            <h2>Remaining Budget: Rs. <span class="remaining-amount">Budget Exceeded by {{ total - budget }}!</span></h2>
+            {% else %}
             <h2>Remaining Budget: Rs. <span class="remaining-amount">{{ remaining_budget }}</span></h2>
+            {% endif %}
         </div>
         <div class="utilities">
             <h2 class="main-description">All Expenses</h2>   
@@ -94,11 +98,11 @@
             <tbody>
                 {% for expense in expenses %}
                 <tr>
-                    <td>{{ expense[2] }}</td>
-                    <td>{{ expense[3] }}</td>
-                    <td>{{ expense[4] }}</td>
-                    <td>{{ expense[5] }}</td>
-                    <td>{{ expense[6] }}</td>
+                    <td data-label="Title">{{ expense[2] }}</td>
+                    <td data-label="Amount">{{ expense[3] }}</td>
+                    <td data-label="category">{{ expense[4] }}</td>
+                    <td data-label="Date">{{ expense[5] }}</td>
+                    <td data-label="Description">{{ expense[6] }}</td>
                     <td>
                         <a href="{{ url_for('edit_expense', id=expense[0]) }}" class="edit-expense">Edit</a>
                     </td>
