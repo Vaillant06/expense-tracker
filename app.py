@@ -182,11 +182,43 @@ def set_budget():
     flash("Buget has been set successfully! You can start tracking your expenses!", "success")
     return redirect(url_for('profile'))
 
+@app.route('/edit_profile/<int:user_id>', methods=['GET', 'POST'])
+def edit_profile(user_id):
+    if 'user_id' not in session:
+        return redirect(url_for('login')) 
+
+    connection = get_db_connection()
+    cursor = connection.cursor()
+
+    if request.method == 'POST':
+        data = {
+            "new_name": request.form['username'],
+            "new_phone": request.form['phone_number'],
+            "new_age": request.form['age'],
+            "user_id": user_id
+        }
+
+        cursor.execute(
+            """
+            UPDATE users
+            SET username=:new_name, phone=:new_phone, age=:new_age
+            WHERE id=:user_id
+            """,
+            data
+        )
+        connection.commit()
+        flash("Profile has been updated successfully!", "success")
+        return redirect(url_for('profile'))
+
+    cursor.close()
+    connection.close()
+
+    return render_template('home.html')
 
 @app.route('/update-budget/<int:user_id>', methods=['GET', 'POST'])
 def update_budget(user_id):
     if 'user_id' not in session:
-        return redirect('url_for(login)')
+        return redirect(url_for('login'))
     
     if request.method == 'POST':
         data = {
@@ -200,7 +232,7 @@ def update_budget(user_id):
         ).fetchone()
         old_budget = budget['set_budget']
 
-        if str("new_budget") == str(old_budget):
+        if str(data["new_budget"]) == str(old_budget):
             flash("Budget is not updated", "error")
             redirect(url_for('profile'))
 

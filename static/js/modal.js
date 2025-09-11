@@ -10,7 +10,6 @@ function saveBudget() {
     let newBudget = document.getElementById("budgetInput").value;
     if (newBudget) {
         document.getElementById("budgetDisplay").innerText = "Budget: Rs. " + newBudget;
-        // send AJAX/Fetch request to backend here
         closeModal();
     }
 }

@@ -17,7 +17,22 @@
                 <h4 class="age">AGE : {{ age }}</h4>
             </div>            
             <div class="action-links">
-                <a href="#">Edit Profile</a>
+                <a href="javascript:void(0);" onclick="openEditProfileModal()">Edit Profile</a>
+
+                <!-- Edit Profile Modal -->
+                <div id="editProfileModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="closeEditProfileModal()">&times;</span>
+                        <h3>Edit Profile</h3>
+                        <form action="{{ url_for('edit_profile', user_id=user_id) }}" method="POST">
+                            <input type="text" name="username" value="{{ username }}" placeholder="Username" required>
+                            <input type="text" name="phone_number" value="{{ phone }}" placeholder="Phone Number" required>
+                            <input type="number" name="age" value="{{ age }}" placeholder="Age" required>
+                            <button type="submit">Save</button>
+                        </form>
+                    </div>
+                </div>
+
                 {% if budget %}
                     <a href="javascript:void(0);" onclick="openModal()">Update Budget</a>
                     <div id="budgetModal" class="modal">
@@ -132,7 +147,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{{ url_for('static', filename='js/chart.js') }}"></script>
     <script src="{{ url_for('static', filename='js/flash-messages.js') }}"></script>
-    <script src="{{url_for('static', filename='js/modal.js')}}"></script>
-
+    <script src="{{ url_for('static', filename='js/modal.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/editProfileModal.js') }}"></script>
 </body>
 </html>
