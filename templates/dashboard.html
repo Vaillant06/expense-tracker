@@ -3,27 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href='https://fonts.googleapis.com/css?family=Poppins' rel="stylesheet">
-    <link rel="stylesheet" href="{{url_for('static', filename='css/dashboard.css')}}">
-    <title>Perosnal Expense Tracker</title>
+    <title>Personal Expense Tracker</title>
+    <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
 </head>
 <body>
     <div class="container">
         <h2 class="title">PERSONAL EXPENSE TRACKER</h2>
-        <p class="description">Get your personalized expense tracker exclusively for you</p>
+        <p class="description">
+            Get your personalized expense tracker exclusively for you
+        </p>
         <div class="action-links">
-            <a href="{{  url_for('login')  }}">Sign in</a>
-            <a href="{{ url_for('register')  }}">Create Account</a>
+            <a href="{{ url_for('login') }}">Sign in</a>
+            <a href="{{ url_for('register') }}">Create Account</a>
         </div>
     </div>
     
+    <!-- Flash Messages -->
     <div id="flash-messages">
         {% with messages = get_flashed_messages(with_categories=true) %}
-        {% for category, message in messages %}
-            <p class="{{ 'error-message' if category == 'error' else 'success-message' }} message">
-            {{ message }}
-            </p>
-        {% endfor %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <p class="{{ 'error-message' if category == 'error' else 'success-message' }} message">
+                        {{ message }}
+                    </p>
+                {% endfor %}
+            {% endif %}
         {% endwith %}
     </div>
 </body>

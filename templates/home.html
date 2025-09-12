@@ -88,7 +88,7 @@
             <h2>Budget: Rs. <span class="amount">{{ budget }}</span></h2>
             <h2>Total Expenses: Rs. <span class="spent-amount">{{ total }}</span></h2>
             {% if total > budget %}
-            <h2>Remaining Budget: Rs. <span class="remaining-amount">Budget Exceeded by {{ total - budget }}!</span></h2>
+            <h2>Remaining Budget: Rs. <span class="remaining-amount">Budget Exceeded by {{ total - budget }}</span></h2>
             {% else %}
             <h2>Remaining Budget: Rs. <span class="remaining-amount">{{ remaining_budget }}</span></h2>
             {% endif %}
@@ -122,9 +122,11 @@
                         <a href="{{ url_for('edit_expense', id=expense[0]) }}" class="edit-expense">Edit</a>
                     </td>
                     <td>
-                        <form action="{{ url_for('delete_expense', id=expense[0]) }}" method="POST">
+                        <form action="{{ url_for('delete_expense', id=expense[0]) }}" method="POST" 
+                            onsubmit="return confirm('Are you sure you want to delete this expense?');">
                             <button type="submit" class="delete-button">Delete</button>
                         </form>
+
                     </td>
                 </tr>
                 {% endfor %}

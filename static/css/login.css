@@ -20,8 +20,8 @@ body{
     flex-direction: column;
     justify-content: top;
     align-items: center;
-    background-color: lightgrey;
-    border: 1px solid lightgrey;
+    background-color: white;
+    border: 2px solid rgb(75, 159, 255);
     border-radius: 40px;
     box-shadow: 6px 6px 12px grey;
     width: 500px;
@@ -46,26 +46,31 @@ body{
 }   
 
 .form-content label{
-    padding-bottom: 2px;
+    padding-bottom: 10px;
+    text-align: center;
+    color: grey;
 }
 
 .form-content input{
+    text-align: center;
+    font-size: 18px;
     width: 400px;
-    border: 1px solid lightgrey;
-    border-radius: 12px;
     height: 40px;
-    margin-bottom: 15px;
-    padding-left: 15px;
+    margin-bottom: 25px;
     outline: none;
+    border: none;
+    border-bottom: 1px solid black;
 }
 
 .form-content input:focus{
-    border-color: 1px solid grey;
-    box-shadow: 0 0 12px grey;
+    transition: 0.2s ease-out;
+    border-bottom: 1px solid rgb(75, 159, 255);
 }
 
+
+
 .form-content input::content{
-    margin-left: 20px;
+    text-align: center;
 }
 
 
@@ -83,17 +88,19 @@ body{
     width: 50%;
     border: none;
     background-color: whitesmoke;
-    margin-bottom: 30px
+    margin-bottom: 30px;
+    transition: 0.3s ease-in;
 }
 
 .action-links button:hover{
     border: lightcyan;
     background-color: lightcyan;
     box-shadow: 0px 0px 10px grey;
+    transition: 0.3s ease-in-out;
 }
 
 .register a{
-    color: darkviolet
+    color: rgb(75, 159, 255)
 }
 
 a{
@@ -107,7 +114,7 @@ a{
 
 #flash-messages{
     text-align: center;
-    margin-top: 40px
+    margin-top: 20px
 }
 
 .error-message{

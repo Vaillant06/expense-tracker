@@ -13,9 +13,9 @@ DB_NAME = "expense.db"
 # ------------------------
 def get_db_connection():
     """Open DB connection with row access by name"""
-    connection = sqlite3.connect(DB_NAME)
-    connection.row_factory = sqlite3.Row
-    return connection
+    conn = sqlite3.connect(DB_NAME)
+    conn.row_factory = sqlite3.Row
+    return conn
 
 
 # ------------------------
@@ -33,25 +33,19 @@ def register():
         username = request.form['username']
         age = request.form['age']
         raw_password = request.form['password']
-        phone = request.form['phone']
         confirm_password = request.form['confirm-password']
+        phone = request.form['phone']
 
         if raw_password != confirm_password:
             flash("Passwords do not match!", "error")
             return redirect(url_for('register'))
 
         with get_db_connection() as conn:
-            existing_user = conn.execute(
-                "SELECT id FROM users WHERE username=?", (username,)
-            ).fetchone()
-            existing_phone = conn.execute(
-                "SELECT phone FROM  users where phone=?", (phone,)
-            ).fetchone()
-            if existing_user:
+            if conn.execute("SELECT 1 FROM users WHERE username=?", (username,)).fetchone():
                 flash("Username already exists!", "error")
                 return redirect(url_for('register'))
             
-            if existing_phone:
+            if conn.execute("SELECT 1 FROM users WHERE phone=?", (phone,)).fetchone():
                 flash("Phone number exists!", "error")
                 return redirect(url_for('register')) 
 
@@ -62,7 +56,7 @@ def register():
             )
             conn.commit()
 
-        flash("Registration successful", "success")
+        flash("Registration successful!", "success")
         return redirect(url_for('login'))
 
     return render_template('register.html')
@@ -95,37 +89,27 @@ def login():
 def profile():
     if 'user_id' not in session:    
         return redirect(url_for('login'))
+    
     user_id = session['user_id']
-
     with get_db_connection() as conn:
-        # User details
-        user = conn.execute(
-            "SELECT * from users WHERE id = ?", (user_id,)
-        ).fetchone()
-        user_id = user['id']
-        username = user['username']
-        age = user['age']
-        phone = user['phone']
+        user = conn.execute("SELECT * FROM users WHERE id = ?", (user_id,)).fetchone()
+        if not user:
+            flash("User not found!", "error")
+            return redirect(url_for('login'))
 
-        # Budget
         budget_row = conn.execute(
             "SELECT set_budget FROM budget WHERE user_id = ?", (user_id,)
         ).fetchone()
         budget = budget_row[0] if budget_row else 0
 
-        # Expenses
         expenses = conn.execute(
             "SELECT * FROM expenses WHERE user_id = ? ORDER BY date DESC", (user_id,)
         ).fetchall()
 
-        # Total
         total = conn.execute(
             "SELECT SUM(amount) FROM expenses WHERE user_id = ?", (user_id,)
         ).fetchone()[0] or 0
 
-        remaining_budget = budget - total
-
-        # Expenses by category
         rows = conn.execute(
             """
             SELECT category, SUM(amount) 
@@ -136,21 +120,18 @@ def profile():
             (user_id,),
         ).fetchall()
 
-    categories_total = {
-        (row[0] if row[0] else "uncategorized"): row[1]
-        for row in rows
-    }   
-
-    # Ensure fixed categories always exist
+    categories_total = {row[0] or "uncategorized": row[1] for row in rows}
     for cat in ['food', 'travel', 'clothes', 'academics', 'utilities', 'others']:
         categories_total.setdefault(cat, 0)
 
+    remaining_budget = budget - total
+
     return render_template(
         "home.html",
-        user_id = user_id,
-        username = username,
-        age = age,
-        phone = phone,
+        user_id=user['id'],
+        username=user['username'],
+        age=user['age'],
+        phone=user['phone'],
         budget=budget,
         expenses=expenses,
         total=total,
@@ -179,78 +160,63 @@ def set_budget():
         )
         conn.commit()
 
-    flash("Buget has been set successfully! You can start tracking your expenses!", "success")
+    flash("Budget has been set successfully!", "success")
     return redirect(url_for('profile'))
 
-@app.route('/edit_profile/<int:user_id>', methods=['GET', 'POST'])
-def edit_profile(user_id):
-    if 'user_id' not in session:
-        return redirect(url_for('login')) 
 
-    connection = get_db_connection()
-    cursor = connection.cursor()
-
-    if request.method == 'POST':
-        data = {
-            "new_name": request.form['username'],
-            "new_phone": request.form['phone_number'],
-            "new_age": request.form['age'],
-            "user_id": user_id
-        }
-
-        cursor.execute(
-            """
-            UPDATE users
-            SET username=:new_name, phone=:new_phone, age=:new_age
-            WHERE id=:user_id
-            """,
-            data
-        )
-        connection.commit()
-        flash("Profile has been updated successfully!", "success")
-        return redirect(url_for('profile'))
-
-    cursor.close()
-    connection.close()
-
-    return render_template('home.html')
-
-@app.route('/update-budget/<int:user_id>', methods=['GET', 'POST'])
+@app.route('/update-budget/<int:user_id>', methods=['POST'])
 def update_budget(user_id):
     if 'user_id' not in session:
         return redirect(url_for('login'))
     
-    if request.method == 'POST':
-        data = {
-            "new_budget": request.form['budget'],
-            "user_id": session['user_id']
-        }
-        
-        connection = get_db_connection()
-        budget = connection.execute(
-            "SELECT * FROM budget WHERE user_id=?", (user_id,)
+    new_budget = request.form['budget']
+    with get_db_connection() as conn:
+        old_budget_row = conn.execute(
+            "SELECT set_budget FROM budget WHERE user_id=?", (user_id,)
         ).fetchone()
-        old_budget = budget['set_budget']
+        old_budget = old_budget_row['set_budget'] if old_budget_row else None
 
-        if str(data["new_budget"]) == str(old_budget):
+        if old_budget is not None and str(new_budget) == str(old_budget):
             flash("Budget is not updated", "error")
-            redirect(url_for('profile'))
+            return redirect(url_for('profile'))
 
-        connection = get_db_connection()
-        connection.execute(
+        conn.execute(
             """
             UPDATE budget
-            SET set_budget=:new_budget, user_id=:user_id
-            WHERE user_id=:user_id
+            SET set_budget=?
+            WHERE user_id=?
             """, 
+            (new_budget, user_id)
+        )
+        conn.commit()
+
+    flash("Budget has been updated!", "success")
+    return redirect(url_for('profile'))
+
+
+# -------- Profile --------
+@app.route('/edit_profile/<int:user_id>', methods=['POST'])
+def edit_profile(user_id):
+    if 'user_id' not in session:
+        return redirect(url_for('login')) 
+
+    data = (
+        request.form['username'],
+        request.form['phone_number'],
+        request.form['age'],
+        user_id
+    )
+
+    with get_db_connection() as conn:
+        conn.execute(
+            "UPDATE users SET username=?, phone=?, age=? WHERE id=?",
             data
         )
-        connection.commit()
+        conn.commit()
 
-        flash("Budget has been updated!", "success")
-        return redirect(url_for('profile'))
-    
-    return render_template('home.html')
+    flash("Profile has been updated successfully!", "success")
+    return redirect(url_for('profile'))
+
 
 # -------- Expenses --------
 @app.route('/add_expense', methods=['GET', 'POST'])
@@ -279,11 +245,10 @@ def add_expense():
             )
             conn.commit()
 
-        flash("New expense has been added successfully", "success")
+        flash("New expense added successfully!", "success")
         return redirect(url_for('profile'))
 
     today = datetime.now(timezone.utc).date().isoformat()
-
     return render_template("add_expense.html", today=today)
 
 
@@ -315,7 +280,7 @@ def edit_expense(id):
             )
             conn.commit()
 
-            flash("Expense has been updated successfully", "success")
+            flash("Expense updated successfully!", "success")
             return redirect(url_for('profile'))
 
         expense = conn.execute(
@@ -338,7 +303,7 @@ def delete_expense(id):
         )
         conn.commit()
 
-    flash("Expense deleted successfully", "success")
+    flash("Expense deleted successfully!", "success")
     return redirect(url_for('profile'))
 
 

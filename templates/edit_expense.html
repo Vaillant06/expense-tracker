@@ -3,47 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href='https://fonts.googleapis.com/css?family=Poppins' rel="stylesheet">
-    <link rel="stylesheet" href="{{url_for('static', filename='css/edit_expense.css')}}">
     <title>Edit Expense</title>
+    <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/edit_expense.css') }}">
 </head>
 <body>
     <div class="container">
         <form action="{{ url_for('edit_expense', id=expense['id']) }}" method="POST">
             <h2 class="title">Edit Expense</h2>
+            
             <div class="form-content">
                 <div class="input-wrap">
-                    <label for="title">Title:</label>
-                    <input type="text" id="title" name="title" value="{{ expense['title'] }}" required>
+                    <label for="title">Title</label>
+                    <input 
+                        type="text" 
+                        id="title" 
+                        name="title" 
+                        value="{{ expense['title'] }}" 
+                        required>
                 </div>
+                
                 <div class="input-wrap">
-                    <label for="amount">Amount:</label>
-                    <input type="number" id="amount" name="amount" step="1" value="{{ expense['amount'] }}" min="1" required>
+                    <label for="amount">Amount</label>
+                    <input 
+                        type="number" 
+                        id="amount" 
+                        name="amount" 
+                        step="1" 
+                        value="{{ expense['amount'] }}" 
+                        min="1" 
+                        required>
                 </div>
+                
                 <div class="input-wrap">
-                    <label for="category">Category:</label>
+                    <label for="category">Category</label>
                     <select id="category" name="category" required>
-                    {% set all_categories = ["food", "travel", "clothes", "academics", "utilities", "others"] %}
-                    {% for cat in all_categories %}
-                        <option value="{{ cat }}"
-                            {% if expense and expense['category'] == cat %}selected{% endif %}>
-                            {{ cat }}
-                        </option>   
-                    {% endfor %}
+                        {% set all_categories = ["food", "travel", "clothes", "academics", "utilities", "others"] %}
+                        {% for cat in all_categories %}
+                            <option value="{{ cat }}"
+                                {% if expense and expense['category'] == cat %}selected{% endif %}>
+                                {{ cat }}
+                            </option>   
+                        {% endfor %}
                     </select>
                 </div>
+                
                 <div class="input-wrap">
-                    <label for="description">Description:</label>
-                    <input type="text" id="description" name="description" value="{{ expense['description'] }}" required>   
+                    <label for="description">Description</label>
+                    <input 
+                        type="text" 
+                        id="description" 
+                        name="description" 
+                        value="{{ expense['description'] }}" 
+                        required>   
                 </div>
+                
                 <div class="input-wrap">
-                    <label for="date">Date:</label>
-                    <input type="date" id="date" name="date" value="{{ expense['date'] }}" required>
+                    <label for="date">Date</label>
+                    <input 
+                        type="date" 
+                        id="date" 
+                        name="date" 
+                        value="{{ expense['date'] }}" 
+                        required>
                 </div>
             </div>
+            
             <div class="action-links">
                 <input type="submit" value="Update Expense">
-                <a href="{{ url_for('profile') }}">Cancel</a>
+                <a class="back-link" href="{{ url_for('profile') }}">Cancel</a>
             </div>
         </form>
     </div>
