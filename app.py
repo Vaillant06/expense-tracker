@@ -32,6 +32,13 @@ def get_db_connection():
 def dashboard():
     return render_template('dashboard.html')
 
+@app.route('/users')
+def view_users():
+    conn = get_db_connection()
+    users = conn.execute('SELECT id, username, age FROM users').fetchall()
+    conn.close()
+    return render_template('users.html', users=users)
+
 
 # ------------------------
 #         Register 
