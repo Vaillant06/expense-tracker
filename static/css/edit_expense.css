@@ -13,7 +13,7 @@ body{
     
     margin-top: 100px;
     padding: 50px;
-    width:1500px;
+    width: 90%;
     border: 2px solid orange;
     border-radius: 40px ;
 }
@@ -37,6 +37,7 @@ body{
 
 .form-content label{
     text-align: center;
+    color: gray;
 }
 
 .form-content input, select{
@@ -110,4 +111,49 @@ input:focus::placeholder{
 .action-links a:hover{
     background-color: rgb(207, 1, 1);
     box-shadow: 0px 0px 6px solid grey;
+}
+
+/* ----------- RESPONSIVE QUERIES ----------- */
+
+/* Tablets and below */
+@media (max-width: 1024px) {
+    .form-content {
+        justify-content: center;
+    }
+}
+
+/* Mobiles */
+@media (max-width: 600px) {
+    .container {
+        width: 80%;
+        height: auto;
+        padding: 20px;
+        border-radius: 20px;
+    }
+    .form-content {
+        margin-top: 30px;
+        flex-direction: column;
+        align-items: center;
+    }
+    .input {
+        width: 90%;
+    }
+    .form-content input, 
+    .form-content label,
+    .form-content select {
+        font-size: 12x;
+        max-width: 100%;
+    }
+    .form-content input,
+    .form-content select {
+        margin-top: 10px;
+        margin-bottom: 30px;
+    }
+    .action-links{
+        margin-top: 10px;
+    }
+    .action-links input,
+    .action-links a {
+        max-width: 100%;
+    }
 }

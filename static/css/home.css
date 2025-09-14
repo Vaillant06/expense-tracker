@@ -389,7 +389,7 @@ tr td:last-child {
 @media (max-width: 768px) {
 
     .action-links a {
-        width: 100%;
+        width: 90%;
         font-size: 14px;
     }
 

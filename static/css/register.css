@@ -1,11 +1,10 @@
-*{
+* {
     margin: 0;
     padding: 0;
-    border-collapse: collapse;
-    font-family: 'Poppins';
+    font-family: 'Poppins', sans-serif;
 }
 
-body{
+body {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -14,108 +13,130 @@ body{
     background-repeat: no-repeat;
 }
 
-.container{
+.container {
     margin-top: 50px;
     display: flex;
     flex-direction: column;
-    justify-content: top;
     align-items: center;
-    background: linear-gradient(135deg, wheat, white);
+    border: 3px solid wheat;
     border-radius: 40px;
     box-shadow: 6px 6px 12px gray;
     width: 600px;
-    height: 850px
+    height: 850px;
 }
 
-.title{
+.title {
     font-weight: 600;
     font-size: 28px;
-    margin: 40px 0px 0px 0px;
+    margin: 40px 0 0;
 }
 
-.description{
-    margin-top: 10px;
+.description {
+    margin: 10px 0;
 }
 
-.form-content{
+.form-content {
     display: flex;
     flex-direction: column;
-    align-content: center;
-    margin: 40px 0px 0px;
-}   
-
-.form-content label{
-    padding-bottom: 2px;
+    align-items: center;
+    margin-top: 40px;
 }
 
-.form-content input{
+.form-content label {
+    text-align: center;
+    font-size: 18px;
+    padding-bottom: 10px;
+    color: grey;
+}
+
+.form-content input {
+    text-align: center;
+    font-size: 18px;
     width: 400px;
-    border: 1px solid wheat;
-    border-radius: 12px;
+    border: none;
+    border-bottom: 1px solid black;
     height: 40px;
     margin-bottom: 15px;
-    padding-left: 15px;
     outline: none;
+    transition: border-color 0.3s ease-in;
 }
 
-.form-content input:focus{
-    border-color: 1px solid wheat;
-    box-shadow: 0 0 6px wheat;
+.form-content input:focus {
+    border-bottom: 1px solid wheat;
+    transition: border-color 0.3s ease-out;
 }
 
-.form-content input::content{
-    margin-left: 20px;
-}
-
-
-.action-links{
+.action-links {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    margin-top: 30px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
-.action-links button{
-    border-radius: 12px;
+.action-links button {
     padding: 15px 30px;
-    width: 50%;
-    border-color: wheat;
-    background-color: wheat
+    border: 1px solid wheat;
+    border-radius: 12px;
+    background-color: wheat;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-.action-links button:hover{
-    border-color: rgb(212, 176, 103)        ;
-    background-color: rgb(212, 176, 103) ;
-    box-shadow: 0px 0px 6px grey;
+.action-links button:hover {
+    border-color: rgb(212, 176, 103);
+    background-color: rgb(212, 176, 103);
+    box-shadow: 0 0 6px grey;
 }
 
-.action-links a{
+.action-links a {
     text-decoration: none;
 }
 
-.action-links a:hover{
+.action-links a:hover {
     text-decoration: underline;
 }
 
-.login{
-    margin-top: 30px;
-    margin-bottom: 10px;
+.login {
+    margin: 30px 0 10px;
 }
 
-.login a{
-    color: darkviolet
+.login a {
+    color: rgb(218, 154, 35);
 }
 
-#flash-messages{
+#flash-messages {
     text-align: center;
-    margin-top: 20px
+    margin-top: 20px;
 }
 
-.error-message{
-    color: red
+.error-message {
+    color: red;
 }
 
-.success-message{
-    color: green
+.success-message {
+    color: green;
+}
+
+
+
+@media (max-width: 600px) {
+    .container {
+        width: 90%;
+        height: auto;
+    }
+
+    p {
+        text-align: center;
+    }
+
+    .form-content {
+        width: 90%;
+    }
+
+    .form-content input {
+        width: 90%;
+        height: 30px;
+        margin-bottom: 20px;
+    }   
 }

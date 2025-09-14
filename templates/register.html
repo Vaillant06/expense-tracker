@@ -13,13 +13,13 @@
         <p class="description">Create an account to start tracking your expenses</p>
         <form action="{{ url_for('register') }}" method="POST" class="form-content">
             <label for="username">Username</label>
-            <input type="text" name="username" id="username" required>
+            <input type="text" name="username" id="username" autocomplete="off" required>
 
             <label for="age">Age</label>
             <input type="number" name="age"  id="age" min="5" required>
 
             <label for="phone">Phone</label>
-            <input type="tel" name="phone" id="phone" required>
+            <input type="tel" name="phone" id="phone" autocomplete="off" required>
 
             <label for="password">Password</label>
             <input type="password" name="password" id="password" required>
