@@ -46,7 +46,6 @@
 
     Validate performance with multiple users and large expense lists
 
-
 # FURURE IMPROVEMENTS
 
     Export expenses as CSV / Excel
