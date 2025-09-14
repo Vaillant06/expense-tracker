@@ -1,3 +1,4 @@
+/* GLOBAL RESET */
 *{
     margin: 0;
     padding: 0;
@@ -64,6 +65,7 @@ body{
     box-shadow: 0px 0px 10px gray
 }
 
+/* -------RESPONSIVE DESIGN ------*/
 @media (max-width: 600px) {
     .container {
         width: 90%;

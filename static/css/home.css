@@ -1,4 +1,4 @@
-/* Global Reset */
+/* GLOBAL RESET */
 * {
     margin: 0;
     padding: 0;
@@ -11,7 +11,7 @@ body {
     display: flex;
 }
 
-/* Sidebar */
+/* SIDEBAR */
 .sidebar {
     margin: 20px 0 0 20px;
     display: flex;
@@ -75,7 +75,7 @@ body {
     transition: 0.1s ease-in;
 }
 
-/* Modal */
+/* MODAL */
 .modal {
     display: none;
     position: fixed;
@@ -134,7 +134,7 @@ body {
     box-shadow: 0 0 6px rgb(0, 77, 0);
 }
 
-/* Expenses by categories */
+/* EXPENSES BY CATEGORIES */
 .expenses-by-categories {
     display: flex;
     flex-direction: column;
@@ -160,7 +160,7 @@ body {
     color: rgb(75, 159, 255);
 }
 
-/* Chart & Flash messages */
+/* CHART AND FLASH MESSAGES */
 #expense-chart {
     margin-top: 30px;
     padding-bottom: 20px;
@@ -180,7 +180,7 @@ body {
     font-size: large;
 }
 
-/* Main Content */
+/* MAIN CONTENT */
 .main-content {
     margin-top: 20px;
     width: 75%;
@@ -235,7 +235,7 @@ button, .edit-expense, .delete-button, .new-expense {
     transition: 0.2s ease-in-out;
 }
 
-/* Table */
+/* TABLE */
 table {
     width: 100%;
     border-collapse: separate;
@@ -276,7 +276,6 @@ tr td:last-child {
     border-bottom-right-radius: 12px;
 }
 
-/* Buttons */
 .edit-expense {
     padding: 10px 30px;
     color: white;
@@ -305,11 +304,9 @@ tr td:last-child {
     border-color: rgb(184, 1, 1);
 }
 
-/* Messages */
 .error-message { color: red; }
 .success-message { color: green; }
 
-/* Budget Form */
 .set-budget p, 
 .set-budget h3 {
     margin-top: 10px;
@@ -358,7 +355,7 @@ tr td:last-child {
 }
 
 
-/* ========== RESPONSIVE DESIGN ========== */
+/* ------ RESPONSIVE DESIGN ------- */
 @media (max-width: 1024px) {
     body {
         flex-direction: column;

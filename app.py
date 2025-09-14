@@ -2,15 +2,21 @@ from flask import Flask, session, render_template, redirect, url_for, request, f
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timezone
 import sqlite3  
+from decimal import Decimal
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = "supersecret"
+app.secret_key = os.environ.get("SECRET_KEY", "dev_secret")
 DB_NAME = "expense.db"
 
 
 # ------------------------
-# Database Helper
+#      Database Helper
 # ------------------------
+
 def get_db_connection():
     """Open DB connection with row access by name"""
     conn = sqlite3.connect(DB_NAME)
@@ -19,14 +25,18 @@ def get_db_connection():
 
 
 # ------------------------
-# Routes
+#           Routes
 # ------------------------
+
 @app.route('/')
 def dashboard():
     return render_template('dashboard.html')
 
 
-# -------- Register --------
+# ------------------------
+#         Register 
+# ------------------------
+
 @app.route('/register', methods=["GET", "POST"])
 def register():
     if request.method == "POST":
@@ -62,7 +72,9 @@ def register():
     return render_template('register.html')
 
 
-# -------- Login --------
+# ------------------------
+#          Login 
+# ------------------------
 @app.route('/login', methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -74,9 +86,10 @@ def login():
                 "SELECT * FROM users WHERE username = ?", (username,)
             ).fetchone()
 
-        if user and check_password_hash(user['password'], password):
-            session['user_id'] = user['id']
-            return redirect(url_for('profile'))
+        if user and check_password_hash(user["password"], password): 
+            session["user_id"] = user["id"]
+            flash("Login successful!", "success")
+            return redirect(url_for("profile"))
 
         flash("Invalid username or password!", "error")
         return redirect(url_for('login'))
@@ -84,7 +97,10 @@ def login():
     return render_template('login.html')
 
 
-# -------- User Dashboard --------
+# ------------------------ 
+#      User Dashboard
+# ------------------------
+
 @app.route('/user_dashboard')
 def profile():
     if 'user_id' not in session:    
@@ -140,7 +156,10 @@ def profile():
     )
 
 
-# -------- Budget --------
+# ------------------------
+#        Set Budget 
+# ------------------------
+
 @app.route('/set_budget', methods=["POST"])
 def set_budget():
     if 'user_id' not in session:
@@ -163,6 +182,10 @@ def set_budget():
     flash("Budget has been set successfully!", "success")
     return redirect(url_for('profile'))
 
+
+# ------------------------
+#       Update Budget
+# ------------------------
 
 @app.route('/update-budget/<int:user_id>', methods=['POST'])
 def update_budget(user_id):
@@ -194,7 +217,10 @@ def update_budget(user_id):
     return redirect(url_for('profile'))
 
 
-# -------- Profile --------
+# ------------------------ 
+#         Edit Profile 
+# ------------------------
+
 @app.route('/edit_profile/<int:user_id>', methods=['POST'])
 def edit_profile(user_id):
     if 'user_id' not in session:
@@ -218,7 +244,10 @@ def edit_profile(user_id):
     return redirect(url_for('profile'))
 
 
-# -------- Expenses --------
+# ------------------------ 
+#         Add Expenses 
+# ------------------------
+
 @app.route('/add_expense', methods=['GET', 'POST'])
 def add_expense():
     if 'user_id' not in session:
@@ -229,7 +258,7 @@ def add_expense():
         data = {
             "user_id": session['user_id'],
             "title": request.form['title'],
-            "amount": request.form['amount'],
+            "amount": Decimal(request.form["amount"]),
             "category": request.form["category"],
             "date": request.form['date'],
             "description": request.form['description'],
@@ -251,6 +280,10 @@ def add_expense():
     today = datetime.now(timezone.utc).date().isoformat()
     return render_template("add_expense.html", today=today)
 
+
+# ------------------------
+#       Edit Expenses
+# ------------------------
 
 @app.route('/edit_expense/<int:id>', methods=['GET', 'POST'])
 def edit_expense(id):
@@ -291,6 +324,10 @@ def edit_expense(id):
     return render_template('edit_expense.html', expense=dict(expense))
 
 
+# ------------------------
+#      Delete Expenses
+# ------------------------
+
 @app.route('/delete_expense/<int:id>', methods=["POST"])
 def delete_expense(id):
     if 'user_id' not in session:
@@ -307,7 +344,10 @@ def delete_expense(id):
     return redirect(url_for('profile'))
 
 
-# -------- Logout --------
+# ------------------------ 
+#          Logout 
+# ------------------------
+
 @app.route('/logout')
 def logout():
     session.clear()
@@ -316,7 +356,7 @@ def logout():
 
 
 # ------------------------
-# Main Entry
+#       Main Entry
 # ------------------------
 if __name__ == "__main__":
     app.run(debug=True)

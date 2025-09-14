@@ -1,4 +1,5 @@
-// Open and close Edit Profile Modal
+/* EDIT PROFILE MODAL */
+
 function openEditProfileModal() {
     document.getElementById("editProfileModal").style.display = "block";
 }
@@ -7,7 +8,6 @@ function closeEditProfileModal() {
     document.getElementById("editProfileModal").style.display = "none";
 }
 
-// Close modals when clicking outside
 window.onclick = (event) => {
     const editProfileModal = document.getElementById("editProfileModal");
     const budgetModal = document.getElementById("budgetModal");

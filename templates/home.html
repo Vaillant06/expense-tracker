@@ -8,6 +8,7 @@
     <title>Expense Tracker</title>
 </head>
 <body>
+    <!-- Sidebar -->
     <div class="sidebar">   
         <div class="profile">
             <h4 class="description">Your Profile</h4>
@@ -51,6 +52,8 @@
                 <a href="{{ url_for('logout') }}">Logout</a>
             </div>
         </div>
+
+        <!-- Expesnses By Categories -->
         {% if budget %}
         <div class="expenses-by-categories">    
             <h2>Expenses by Category</h2>
@@ -71,6 +74,8 @@
             </div>
         </div>
         {% endif %}
+
+        <!--Flash Messages -->
         <div id="flash-messages">
             {% with messages = get_flashed_messages(with_categories=true) %}
             {% for category, message in messages %}
@@ -81,6 +86,8 @@
             {% endwith %}
         </div>
     </div>
+
+    <!-- Main Content -->
     <div class="main-content">
         <h1 class="title">Expense Tracker</h1>    
         {% if budget %}
@@ -97,6 +104,8 @@
             <h2 class="main-description">All Expenses</h2>   
             <a href="{{ url_for('add_expense') }}" class="new-expense"> + Add New Expense</a>  
         </div> 
+
+        <!-- Expenses Table -->
         {% if expenses %}
         <table class="expenses-table">
             <thead>
@@ -134,6 +143,7 @@
         </table>
         {% endif %}
 
+        <!-- Set Budget -->
         {% else %}
         <div class="set-budget">
             <p>Start tracking your expenses</p>
@@ -146,6 +156,7 @@
         {% endif %}
     </div>
 
+    <!-- JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{{ url_for('static', filename='js/chart.js') }}"></script>
     <script src="{{ url_for('static', filename='js/flash-messages.js') }}"></script>

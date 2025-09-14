@@ -1,3 +1,5 @@
+/* FLASH MESSAGES */
+
 setTimeout(() => {
     const flashMessages = document.getElementById("flash-messages");
     if (flashMessages) {

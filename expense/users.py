@@ -1,3 +1,5 @@
+# Users Database
+
 import sqlite3
 
 connection = sqlite3.connect('expense.db')

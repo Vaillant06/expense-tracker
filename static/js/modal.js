@@ -1,3 +1,5 @@
+/* BUDGET MODAL */
+
 function openModal() {
     document.getElementById("budgetModal").style.display = "block";
 }

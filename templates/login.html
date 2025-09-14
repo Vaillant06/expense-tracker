@@ -12,11 +12,19 @@
         <h2 class="title">LOGIN</h2>
         <form action="/login" method="POST" class="form-content">
             <label for="username">Username</label>
-            <input type="text" name="username" id="username" autocomplete="off">
+            <input 
+                type="text" 
+                name="username" 
+                id="username" 
+                autocomplete="off">
 
             <label for="passowrd">Password</label>
-            <input type="password" name="password" id="password" autocomplete="off">        
-
+            <input 
+                type="password" 
+                name="password" 
+                id="password" 
+                autocomplete="off">   
+                     
             <div class="action-links">
                 <button type="submit">Login</button>
                 <p class="register">New User? 
@@ -25,6 +33,7 @@
                 <a href="{{ url_for('dashboard') }}">Back to home</a>
             </div>
 
+            <!-- Flash messages -->
             <div id="flash-messages">
                 {% with messages = get_flashed_messages(with_categories=true) %}
                 {% for category, message in messages %}
